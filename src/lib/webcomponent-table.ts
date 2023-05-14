@@ -2,23 +2,37 @@ import {
   GeModelChangeEvent,
   GeMouseEvent,
   SimpleDomService,
-  TableModelIf,
-  TableOptions,
+  TableModelAndOptionsIf,
   TableScope
 } from "@guiexpert/table";
 
-export class TableComponent extends HTMLElement {
-
-  public static observedAttributes = [];
+export class GuiexpertTableComponent extends HTMLElement {
 
 
-  setData(tableModel: TableModelIf, tableOptions: TableOptions) {
+  // public static observedAttributes = ["data"];
+
+  private _data: TableModelAndOptionsIf | undefined;
+
+
+  get data(): TableModelAndOptionsIf | undefined {
+    return this._data;
+  }
+
+  set data(value: TableModelAndOptionsIf | undefined) {
+    this._data = value;
+    console.info("this._data", this._data);
+    if (value) {
+      this.setData(value);
+    }
+  }
+
+  public setData({ tableModel, tableOptions }: TableModelAndOptionsIf) {
     console.info("set data", tableModel);
 
     this.innerHTML = `
      <div
       class="container-div"
-      style="width: 100%, height: 100%, backgroundColor: transparent, padding: 0, margin: 0; display: block"></div>
+      style="width: 100%; height: 100%; background-color: transparent; padding: 0; margin: 0; display: block"></div>
     `;
     console.info("set data", this.innerHTML);
 
@@ -77,4 +91,5 @@ export class TableComponent extends HTMLElement {
   }
 }
 
-customElements.define("guiexpert-table", TableComponent);
+customElements.define("guiexpert-table-component", GuiexpertTableComponent);
+
