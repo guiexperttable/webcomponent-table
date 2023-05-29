@@ -6,10 +6,8 @@ import {
   TableScope
 } from "@guiexpert/table";
 
-export class GuiexpertTableComponent extends HTMLElement {
+export class GuiexpertTable extends HTMLElement {
 
-
-  // public static observedAttributes = ["data"];
 
   private _data: TableModelAndOptionsIf | undefined;
 
@@ -20,24 +18,20 @@ export class GuiexpertTableComponent extends HTMLElement {
 
   set data(value: TableModelAndOptionsIf | undefined) {
     this._data = value;
-    console.info("this._data", this._data);
     if (value) {
       this.setData(value);
     }
   }
 
   public setData({ tableModel, tableOptions }: TableModelAndOptionsIf) {
-    console.info("set data", tableModel);
 
     this.innerHTML = `
      <div
       class="container-div"
       style="width: 100%; height: 100%; background-color: transparent; padding: 0; margin: 0; display: block"></div>
     `;
-    console.info("set data", this.innerHTML);
 
     const ele = this.querySelector("div") as HTMLDivElement;
-    console.info("ele", ele);
 
     const domService = new SimpleDomService();
     if (tableModel) {
@@ -83,13 +77,20 @@ export class GuiexpertTableComponent extends HTMLElement {
         ele, tableModel, domService, tableOptions, listener
       );
       domService.setStyle(ele, "height", "100%");
+      domService.setStyle(ele, "width", "100%");
       tableScope.firstInit();
 
       const e = new CustomEvent("tableReady", { detail: tableScope.getApi(), bubbles: true });
       ele.dispatchEvent(e);
+      console.info(ele);
     }
+  }
+
+  connectedCallback() {
+    console.info('connectedCallback()');
   }
 }
 
-customElements.define("guiexpert-table-component", GuiexpertTableComponent);
+
+// we do this in the demo app: customElements.define("guiexpert-table", GuiexpertTable);
 

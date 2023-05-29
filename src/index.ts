@@ -1,1 +1,1 @@
-export * from "./lib/webcomponent-table";
+export { GuiexpertTable } from "./lib/guiexpert-table";
